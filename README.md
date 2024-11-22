@@ -1,4 +1,4 @@
-# Open token
+# Open Token
 
 ## Introduction
 
