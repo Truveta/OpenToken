@@ -42,3 +42,4 @@ buildNumber.properties
 .classpath
 
 .devcontainer
+.DS_Store

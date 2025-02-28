@@ -11,14 +11,17 @@ import lombok.Getter;
  */
 public class CommandLineArguments {
 
+    public static final String TYPE_CSV = "csv";
+    public static final String TYPE_PARQUET = "parquet";
+
     @Getter
     @Parameter(names = { "-h",
-            "--hashingsecret" }, description = "Get Hashing Secret for the tokengen workflow instance.", required = false)
+            "--hashingsecret" }, description = "Hashing Secret to hash token signatures.", required = false)
     private String hashingSecret = null;
 
     @Getter
     @Parameter(names = { "-e",
-            "--encryptionkey" }, description = "Get encryption key for tokengen workflow instance.", required = false)
+            "--encryptionkey" }, description = "Encryption key to encrypt tokens with.", required = false)
     private String encryptionKey = null;
 
     @Getter
@@ -33,4 +36,8 @@ public class CommandLineArguments {
     @Parameter(names = { "-o", "--output" }, description = "Output file path.", required = true)
     private String outputPath = "";
 
+    @Getter
+    @Parameter(names = { "-ot",
+            "--output-type" }, description = "Output file type if different from input.", required = false)
+    private String outputType = "";
 }

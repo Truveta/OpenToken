@@ -109,32 +109,34 @@ A driver is provided so that the library code can be executed easily.
 The driver code could be invoked using:
 
 ```shell
-java -jar open-token-<version>.jar -i <input-file> -t csv -o <output-file> -h "xb7...98a" -e "b32...q1r"
+java -jar open-token-<version>.jar -i <input-file> -t <input-type> -o <output-file> -ot <output-type> -h "xb7...98a" -e "b32...q1r"
 ```
 
 Example:
-`java -jar target/open-token-1.4.0.jar -i src/main/resources/sample.csv -t csv -o target/output.csv -h "HashingKey" -e "Secret-Encryption-Key-Goes-Here."`
+`java -jar target/open-token-1.4.0.jar -i src/test/resources/sample.csv -t csv -o target/output.csv -ot csv -h "HashingKey" -e "Secret-Encryption-Key-Goes-Here."`
 
 #### Via Docker
 
 Please run the following command in the same folder as the source CSV file:
 
 ```shell
-docker run -v "$(pwd)":/app open-token -i <input-file> -t csv -o <output-file> -h "xb7...98a" -e "b32...q1r"
+docker run -v "$(pwd)":/app open-token -i <input-file> -t <input-type> -o <output-file> -ot <output-type> -h "xb7...98a" -e "b32...q1r"
 ```
 
 Example:
-`docker run -v "$(pwd)":/app open-token -i src/main/resources/sample.csv -t csv -o output.csv -h "HashingKey" -e "Secret-Encryption-Key-Goes-Here."`
+`docker run -v "$(pwd)":/app open-token -i src/test/resources/sample.csv -t csv -o target/output.csv -ot csv -h "HashingKey" -e "Secret-Encryption-Key-Goes-Here."`
 
 ### Arguments
 
 The driver accepts multiple command line arguments:
 
-- `-t | --type`: This argument is used to specify the input/output file type. You can provide the file type as a string. Only `csv` is supported now.
+- `-t | --type`: This argument is used to specify the input file type. You can provide the file type as a string. Types `csv` or `parquet` are supported.
 
 - `-i | --input`: This argument is used to specify the input file path. You can provide the path to an input file containing the sample data for person matching.
 
 - `-o | --output`: This argument is used to specify the output file path. The generated tokens will be written to this file.
+
+- `-ot | --output-type`: Optional. This argument is used to specify the output file type. If not provided, the input type will be used as output type. You can provide the file type as a string. Types `csv` or `parquet` are supported.
 
 - `-h | --hashingsecret`: This argument is used to specify the hashing secret for the `HMAC-SHA256` digest. The generated tokens are hashed using this digest.
 

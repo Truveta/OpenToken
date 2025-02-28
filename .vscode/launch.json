@@ -6,11 +6,11 @@
     "configurations": [
         {
             "type": "java",
-            "name": "OpenToken",
+            "name": "open-token",
             "request": "launch",
             "mainClass": "com.truveta.opentoken.Main",
             "projectName": "open-token",
-            "args": "-i src/main/resources/sample.csv -t csv -o target/output.csv -h \"HashingKey\" -e \"Secret-Encryption-Key-Goes-Here.\""
+            "args": "-i src/test/resources/sample.csv -t csv -o target/output.csv -ot csv -h \"HashingKey\" -e \"Secret-Encryption-Key-Goes-Here.\""
         }
     ]
 }

@@ -3,7 +3,7 @@
  */
 package com.truveta.opentoken.tokens;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import com.truveta.opentoken.attributes.AttributeExpression;
@@ -38,5 +38,5 @@ public interface BaseTokenDefinition {
      * 
      * @return a list of token/rule definition.
      */
-    ArrayList<AttributeExpression> getTokenDefinition(String tokenId);
+    List<AttributeExpression> getTokenDefinition(String tokenId);
 }

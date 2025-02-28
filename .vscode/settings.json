@@ -1,6 +1,6 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive",
-    "java.debug.settings.onBuildFailureProceed": true,
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.compile.nullAnalysis.mode": "automatic",
     "java.templates.fileHeader": [
         "/**",
         " * Copyright (c) Truveta. All rights reserved.",

@@ -1,7 +1,7 @@
 /**
  * Copyright (c) Truveta. All rights reserved.
  */
-package com.truveta.opentoken.io;
+package com.truveta.opentoken.io.csv;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -11,6 +11,8 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.truveta.opentoken.io.PersonAttributesWriter;
 
 /**
  * The PersonAttributeCSVWriter class is responsible for writing person

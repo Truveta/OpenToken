@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.Base64.Encoder;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -24,7 +25,9 @@ public class HashTokenTransformer implements TokenTransformer {
     private static final Logger logger = LoggerFactory.getLogger(HashTokenTransformer.class.getName());
 
     public static final int NUMBEROFBYTES = 32;
+
     private final Mac mac;
+    private final Encoder encoder;
 
     /**
      * Initializes the underlying MAC with the secret key.
@@ -39,10 +42,12 @@ public class HashTokenTransformer implements TokenTransformer {
     public HashTokenTransformer(String hashingSecret) throws NoSuchAlgorithmException, InvalidKeyException {
         if (hashingSecret == null || hashingSecret.isBlank()) {
             this.mac = null;
+            this.encoder = null;
             return;
         }
         this.mac = Mac.getInstance("HmacSHA256");
         this.mac.init(new SecretKeySpec(hashingSecret.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
+        this.encoder = Base64.getEncoder();
     }
 
     /**
@@ -64,8 +69,10 @@ public class HashTokenTransformer implements TokenTransformer {
             throw new IllegalArgumentException("Invalid Argument. Token can't be Null.");
         }
 
-        byte[] dataAsBytes = token.getBytes();
-        byte[] sha = this.mac.doFinal(dataAsBytes);
-        return Base64.getEncoder().encodeToString(sha);
+        synchronized (this.mac) {
+            byte[] dataAsBytes = token.getBytes();
+            byte[] sha = this.mac.doFinal(dataAsBytes);
+            return Base64.getEncoder().encodeToString(sha);
+        }
     }
 }

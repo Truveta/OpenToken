@@ -3,8 +3,8 @@
  */
 package com.truveta.opentoken.tokens;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,7 +29,7 @@ import com.truveta.opentoken.attributes.AttributeExpression;
  *      AttributeExpression
  */
 public class TokenDefinition implements BaseTokenDefinition {
-    private final Map<String, ArrayList<AttributeExpression>> definitions;
+    private final Map<String, List<AttributeExpression>> definitions;
 
     /**
      * Initializes the token definitions.
@@ -62,7 +62,7 @@ public class TokenDefinition implements BaseTokenDefinition {
     }
 
     @Override
-    public ArrayList<AttributeExpression> getTokenDefinition(String tokenId) {
+    public List<AttributeExpression> getTokenDefinition(String tokenId) {
         return definitions.get(tokenId);
     }
 }

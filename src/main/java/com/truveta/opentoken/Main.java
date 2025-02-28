@@ -13,10 +13,12 @@ import com.beust.jcommander.JCommander;
 import com.truveta.opentoken.tokentransformer.EncryptTokenTransformer;
 import com.truveta.opentoken.tokentransformer.HashTokenTransformer;
 import com.truveta.opentoken.tokentransformer.TokenTransformer;
-import com.truveta.opentoken.io.PersonAttributesCSVReader;
-import com.truveta.opentoken.io.PersonAttributesCSVWriter;
 import com.truveta.opentoken.io.PersonAttributesReader;
 import com.truveta.opentoken.io.PersonAttributesWriter;
+import com.truveta.opentoken.io.csv.PersonAttributesCSVReader;
+import com.truveta.opentoken.io.csv.PersonAttributesCSVWriter;
+import com.truveta.opentoken.io.parquet.PersonAttributesParquetReader;
+import com.truveta.opentoken.io.parquet.PersonAttributesParquetWriter;
 import com.truveta.opentoken.processor.PersonAttributesProcessor;
 
 public class Main {
@@ -30,15 +32,22 @@ public class Main {
         String inputPath = commandLineArguments.getInputPath();
         String inputType = commandLineArguments.getInputType();
         String outputPath = commandLineArguments.getOutputPath();
+        String outputType = commandLineArguments.getOutputType();
+        if (outputType == null || outputType.isEmpty()) {
+            outputType = inputType; // defaulting to input type if not provided
+        }
 
-        logger.info("Hashing Secret: {}", maskString(hashingSecret));
-        logger.info("Encryption Key: {}", maskString(encryptionKey));
+        if (logger.isInfoEnabled()) {
+            logger.info("Hashing Secret: {}", maskString(hashingSecret));
+            logger.info("Encryption Key: {}", maskString(encryptionKey));
+        }
         logger.info("Input Path: {}", inputPath);
         logger.info("Input Type: {}", inputType);
         logger.info("Output Path: {}", outputPath);
+        logger.info("Output Type: {}", outputType);
 
-        if (!"csv".equals(inputType)) {
-            logger.error("No input type other than csv supported yet!");
+        if (!(CommandLineArguments.TYPE_CSV.equals(inputType) || CommandLineArguments.TYPE_PARQUET.equals(inputType))) {
+            logger.error("Only csv and parquet input types are supported!");
             return;
         } else if (hashingSecret == null || hashingSecret.isBlank() || encryptionKey == null
                 || encryptionKey.isBlank()) {
@@ -55,13 +64,37 @@ public class Main {
             return;
         }
 
-        try (PersonAttributesReader reader = new PersonAttributesCSVReader(inputPath);
-                PersonAttributesWriter writer = new PersonAttributesCSVWriter(outputPath)) {
+        try (PersonAttributesReader reader = createPersonAttributesReader(inputPath, inputType);
+                PersonAttributesWriter writer = createPersonAttributesWriter(outputPath, outputType)) {
 
             PersonAttributesProcessor.process(reader, writer, tokenTransformerList);
 
         } catch (Exception e) {
             logger.error("Error in processing the input file. Execution halted. ", e);
+        }
+    }
+
+    private static PersonAttributesReader createPersonAttributesReader(String inputPath, String inputType)
+            throws IOException {
+        switch (inputType.toLowerCase()) {
+            case CommandLineArguments.TYPE_CSV:
+                return new PersonAttributesCSVReader(inputPath);
+            case CommandLineArguments.TYPE_PARQUET:
+                return new PersonAttributesParquetReader(inputPath);
+            default:
+                throw new IllegalArgumentException("Unsupported input type: " + inputType);
+        }
+    }
+
+    private static PersonAttributesWriter createPersonAttributesWriter(String outputPath,
+            String outputType) throws IOException {
+        switch (outputType.toLowerCase()) {
+            case CommandLineArguments.TYPE_CSV:
+                return new PersonAttributesCSVWriter(outputPath);
+            case CommandLineArguments.TYPE_PARQUET:
+                return new PersonAttributesParquetWriter(outputPath);
+            default:
+                throw new IllegalArgumentException("Unsupported output type: " + outputType);
         }
     }
 

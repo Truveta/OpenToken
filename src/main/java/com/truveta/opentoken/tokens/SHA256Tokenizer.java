@@ -60,6 +60,7 @@ public final class SHA256Tokenizer {
             return EMPTY;
         }
         byte[] bytes = value.getBytes(StandardCharsets.UTF_8.name());
+
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(bytes);
         String transformedToken = Hex.encodeHexString(hash);
