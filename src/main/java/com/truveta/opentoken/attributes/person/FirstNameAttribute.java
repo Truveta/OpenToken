@@ -38,6 +38,6 @@ public class FirstNameAttribute extends BaseAttribute {
 
     @Override
     public String normalize(String value) {
-        return AttributeUtilities.normalize(value);
+        return AttributeUtilities.removeDiacritics(value);
     }
 }

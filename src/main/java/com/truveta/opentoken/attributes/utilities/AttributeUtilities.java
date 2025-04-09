@@ -18,7 +18,7 @@ public class AttributeUtilities {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }
 
-    public static String normalize(String value) {
+    public static String removeDiacritics(String value) {
         return DIACRITICS.matcher(Normalizer.normalize(value.trim(), Normalizer.Form.NFD)).replaceAll("");
     }
 }
